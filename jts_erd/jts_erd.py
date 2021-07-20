@@ -46,6 +46,7 @@ options_defaults = {
     'display_indexes': True,
     'display_crowfoots': True,
     'omit_isolated_tables': False,
+    'default_namespace_name': 'public',
 }
 """
 Options and their default values.
@@ -65,7 +66,8 @@ Options:
   * **display_columns**: bool
   * **display_indexes**: bool
   * **display_crowfoots**: bool
-  * **omit_isolated_tables**: bool  
+  * **omit_isolated_tables**: bool
+  * **default_namespace_name**: string  
 """
 
 
@@ -207,8 +209,7 @@ def save_svg(json_database_schema, filepath, **options):
     schema_graph.draw(filepath)
 
 
-def _graph_add_table(opt, graph, namespace_name, table,
-                    default_namespace_name='public'):
+def _graph_add_table(opt, graph, namespace_name, table):
     """
     Add a record-shaped node to *graph* with information on a *table*.
 
@@ -217,8 +218,7 @@ def _graph_add_table(opt, graph, namespace_name, table,
     table_name = table['name']
     table_comment = table.get('description', '')
     display = ['name', 'type', 'combined']
-    title = (namespace_name + '.' if namespace_name != default_namespace_name
-             else '') + table_name
+    title = (namespace_name + '.' if namespace_name != opt['default_namespace_name'] else '') + table_name
     html_row0 = '<TR>\n    <TD COLOR="black" BGCOLOR="lightgrey"'\
                 ' COLSPAN="%s"><FONT POINT-SIZE="%s"><b>%s</b></FONT>'\
                 '<FONT POINT-SIZE="%s"><BR/>%s</FONT></TD>\n</TR>\n'\
